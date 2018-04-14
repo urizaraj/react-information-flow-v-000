@@ -4,7 +4,6 @@ import Tier2 from './Tier2'
 
 
 export default class Tier1 extends Component {
-
   constructor(props) {
     super(props)
     const initialColor = getRandomColor()
@@ -12,16 +11,32 @@ export default class Tier1 extends Component {
       color: initialColor,
       childColor: getReducedColor(initialColor)
     }
+    this.handleClick = this.handleClick.bind(this)
   }
 
   render() {
-    // hard coded color values have been added below, though they won't be
-    // present in our solution. What should they be replaced with?
+    const childColor = this.state.childColor
     return (
-      <div onClick={() => {this.setState({color: "#000"})}} className="tier1" style={{backgroundColor: this.state.color, color: this.state.color}}>
-        <Tier2 color={"#0F0"} />
-        <Tier2 color={"#0FF"} />
+      <div onClick={this.handleClick} className="tier1" style={{backgroundColor: this.state.color, color: this.state.color}}>
+        <Tier2 color={childColor} onClick={this.handleChildClick.bind(this)} handleChildClick={this.handleChildClick} />
+        <Tier2 color={childColor} onClick={this.handleChildClick.bind(this)} handleChildClick={this.handleChildClick} />
       </div>
     )
+  }
+
+  handleClick(event) {
+    const newColor = getRandomColor()
+    this.setState({
+      color: newColor,
+      childColor: getReducedColor(newColor)
+    })
+  }
+
+  handleChildClick(event) {
+    event.stopPropagation()
+    const newColor = getRandomColor()
+    this.setState({
+      childColor: getReducedColor(newColor)
+    })
   }
 }

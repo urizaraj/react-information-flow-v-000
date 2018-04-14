@@ -4,7 +4,6 @@ import Tier3 from './Tier3'
 
 
 export default class Tier2 extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -13,13 +12,18 @@ export default class Tier2 extends Component {
   }
 
   render() {
-    // hard coded color values have been added below, though they won't be
-    // present in our solution. What should they be replaced with?
+    const childColor = this.state.childColor
     return (
-      <div className="tier2" style={{backgroundColor: this.props.color, color: this.props.color}}>
-        <Tier3 color={"#0F0"} />
-        <Tier3 color={"#F00"} />
+      <div className="tier2" style={{backgroundColor: this.props.color, color: this.props.color}} onClick={this.props.onClick} >
+        <Tier3 color={childColor} handleChildClick={this.props.handleChildClick.bind(this)} />
+        <Tier3 color={childColor} handleChildClick={this.props.handleChildClick.bind(this)} />
       </div>
     )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      childColor: getReducedColor(nextProps.color)
+    })
   }
 }
